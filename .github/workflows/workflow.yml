@@ -1,0 +1,34 @@
+name: Maven Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # Change this to your desired Java version
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Deploy to GitHub Pages
+        if: success() && github.event_name == 'push' # Deploy only on push to main
+        run: |
+          mkdir -p gh-pages
+          cp -r target/* gh-pages
+          git add gh-pages
+          git commit -m "Deploy to GitHub Pages"
+          git push origin main
