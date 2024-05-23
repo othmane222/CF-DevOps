@@ -17,7 +17,7 @@ jobs:
         if: success() && github.event_name == 'push' # Deploy only on push to main
         run: |
           mkdir -p deploy
-          cp -r * deploy
+          cp -r * nv
           cd deploy
           git init
           git config user.name "${{ github.actor }}"
