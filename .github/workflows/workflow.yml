@@ -16,14 +16,13 @@ jobs:
       - name: Deploy to GitHub Pages
         if: success() && github.event_name == 'push' # Deploy only on push to main
         run: |
-          mkdir -p gh-pages
-          cp -r * gh-pages
-          git checkout gh-pages || git checkout --orphan gh-pages
-          git reset --hard
-          mv -f gh-pages/* .
-          rm -rf gh-pages
+          mkdir -p deploy
+          cp -r * deploy
+          cd deploy
+          git init
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
           git commit -m "Deploy to GitHub Pages"
-          git push -f origin gh-pages:gh-pages
+          git branch -m gh-pages
+          git push -f https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git gh-pages
