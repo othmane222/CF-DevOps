@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build HTML
 
 on:
   push:
@@ -6,23 +6,13 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Deploy to GitHub Pages
-        if: success() && github.event_name == 'push' # Deploy only on push to main
+      - name: Build HTML
         run: |
-          mkdir -p deploy
-          cp -r * nv
-          cd deploy
-          git init
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-          git branch -m gh-pages
-          git push -f https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git gh-pages
+          # Your build commands here
